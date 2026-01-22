@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "639107211605",
+    "project_id": "anythingz-96d30",
+    "storage_bucket": "anythingz-96d30.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:639107211605:android:e504af4ea416e576e74fdc",
+        "android_client_info": {
+          "package_name": "com.anythingz.customer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwZYDuc3L9eTTsWdRxLno34nI205v7Eas"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:639107211605:android:a4909e8ce20ac8bce74fdc",
+        "android_client_info": {
+          "package_name": "com.anythingz.delivery"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwZYDuc3L9eTTsWdRxLno34nI205v7Eas"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:639107211605:android:182b205b27392c94e74fdc",
+        "android_client_info": {
+          "package_name": "com.anythingz.store"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwZYDuc3L9eTTsWdRxLno34nI205v7Eas"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
