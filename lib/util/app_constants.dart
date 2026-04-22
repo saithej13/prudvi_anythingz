@@ -6,17 +6,19 @@ import 'package:anythingz/util/images.dart';
 class AppConstants {
   static const String appName = 'Anythingz';
   static const double appVersion = 3.0;
-  static const String releaseDate = '21 Jan 2026';
+  static const String releaseDate = '05 Feb 2026';
   static const String fontFamily = 'Roboto';
   static const bool payInWevView = false;
   static const int balanceInputLen = 10;
   // static const String webHostedUrl = 'https://admin.anythngz.com';
-  static const String webHostedUrl = 'http://65.0.29.11';
+  // static const String webHostedUrl = 'http://65.0.29.11';
+  static const String webHostedUrl = 'https://anythingz.in';
 
   static const bool useReactWebsite = false;
 
   // static const String baseUrl = 'https://admin.anythngz.com';
-  static const String baseUrl = 'http://65.0.29.11';
+  static const String baseUrl = 'https://anythingz.in';
+  // http://13.126.40.189
   static const String categoryUri = '/api/v1/categories';
   static const String bannerUri = '/api/v1/banners';
   static const String storeItemUri = '/api/v1/items/latest';

@@ -21,38 +21,105 @@ class FoodHomeScreen extends StatelessWidget {
   const FoodHomeScreen({super.key});
 
   @override
+
+
   Widget build(BuildContext context) {
     bool isLoggedIn = AuthHelper.isLoggedIn();
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
-      Container(
-        width: MediaQuery.of(context).size.width,
-        decoration: Get.find<ThemeController>().darkTheme ? null : const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(Images.foodModuleBannerBg),
-            fit: BoxFit.cover,
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+
+          /// 🔴 DEBUG VISIBILITY (YOU WILL SEE THIS)
+          // Container(
+          //   height: 60,
+          //   width: double.infinity,
+          //   color: Colors.red,
+          //   alignment: Alignment.center,
+          //   child: const Text(
+          //     'I AM VISIBLE',
+          //     style: TextStyle(color: Colors.white, fontSize: 18),
+          //   ),
+          // ),
+
+          /// Banner section
+          Container(
+            width: MediaQuery.of(context).size.width,
+            decoration: Get.find<ThemeController>().darkTheme
+                ? null
+                : const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(Images.foodModuleBannerBg),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: const Column(
+              children: [
+                BannerView(isFeatured: false),
+                SizedBox(height: 12),
+              ],
+            ),
           ),
-        ),
-        child: const Column(
-          children: [
-            // BadWeatherWidget(),
-            BannerView(isFeatured: false),
-            SizedBox(height: 12),
-          ],
-        ),
-      ),
 
-      const CategoryView(),
-      isLoggedIn ? const VisitAgainView(fromFood: true) : const SizedBox(),
-      const SpecialOfferView(isFood: true, isShop: false),
-      const HighlightWidget(),
-      const TopOffersNearMe(),
-      const BestReviewItemView(),
-      const BestStoreNearbyView(),
-      const ItemThatYouLoveView(forShop: false),
-      const MostPopularItemView(isFood: true, isShop: false),
-      const JustForYouView(),
-      const NewOnMartView(isNewStore: true, isPharmacy: false, isShop: false),
-    ]);
+          const CategoryView(),
+          if (isLoggedIn) const VisitAgainView(fromFood: true),
+          const SpecialOfferView(isFood: true, isShop: false),
+          const HighlightWidget(),
+          const TopOffersNearMe(),
+          const BestReviewItemView(),
+          const BestStoreNearbyView(),
+          const ItemThatYouLoveView(forShop: false),
+          const MostPopularItemView(isFood: true, isShop: false),
+          const JustForYouView(),
+          const NewOnMartView(
+            isNewStore: true,
+            isPharmacy: false,
+            isShop: false,
+          ),
+
+          const SizedBox(height: 120), // bottom nav space
+        ],
+      ),
+    );
   }
+
+
+
+
+// Widget build(BuildContext context) {
+//     bool isLoggedIn = AuthHelper.isLoggedIn();
+//     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+//
+//       Container(
+//         width: MediaQuery.of(context).size.width,
+//         decoration: Get.find<ThemeController>().darkTheme ? null : const BoxDecoration(
+//           image: DecorationImage(
+//             image: AssetImage(Images.foodModuleBannerBg),
+//             fit: BoxFit.cover,
+//           ),
+//         ),
+//         child: const Column(
+//           children: [
+//             // BadWeatherWidget(),
+//             BannerView(isFeatured: false),
+//             SizedBox(height: 12),
+//           ],
+//         ),
+//       ),
+//
+//       const CategoryView(),
+//       isLoggedIn ? const VisitAgainView(fromFood: true) : const SizedBox(),
+//       const SpecialOfferView(isFood: true, isShop: false),
+//       const HighlightWidget(),
+//       const TopOffersNearMe(),
+//       const BestReviewItemView(),
+//       const BestStoreNearbyView(),
+//       const ItemThatYouLoveView(forShop: false),
+//       const MostPopularItemView(isFood: true, isShop: false),
+//       const JustForYouView(),
+//       const NewOnMartView(isNewStore: true, isPharmacy: false, isShop: false),
+//     ]);
+//   }
 }
