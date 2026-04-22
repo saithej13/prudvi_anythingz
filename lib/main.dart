@@ -44,7 +44,7 @@ Future<void> main() async {
     HttpOverrides.global = MyHttpOverrides();
   }
   setPathUrlStrategy();
-
+// test for git commit
   /*///Pass all uncaught "fatal" errors from the framework to Crashlytics
   FlutterError.onError = (errorDetails) {
     FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
