@@ -256,20 +256,20 @@ class FoodCategoryView extends StatelessWidget {
     return Stack(children: [
       Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         SizedBox(
-          height: 160,
-          child: categoryController.categoryList != null ? ListView.builder(
+          height: 220,
+          child: categoryController.categoryList != null ? GridView.builder(
             controller: scrollController,
             physics: const BouncingScrollPhysics(),
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.only(left: Dimensions.paddingSizeDefault, top: Dimensions.paddingSizeDefault),
-            itemCount: categoryController.categoryList!.length > 10 ? 10 : categoryController.categoryList!.length,
+            itemCount: categoryController.categoryList!.length > 8 ? 8 : categoryController.categoryList!.length,
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.only(bottom: Dimensions.paddingSizeDefault, right: Dimensions.paddingSizeDefault, top: Dimensions.paddingSizeDefault),
                 child: InkWell(
                   onTap: () {
-                    if(index == 9 && categoryController.categoryList!.length > 10) {
+                    if(index == 7 && categoryController.categoryList!.length > 8) {
                       Get.toNamed(RouteHelper.getCategoryRoute());
                     } else {
                       Get.toNamed(RouteHelper.getCategoryItemRoute(
@@ -279,7 +279,7 @@ class FoodCategoryView extends StatelessWidget {
                   },
                   borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
                   child: SizedBox(
-                    width: 60,
+                    width: 80,
                     child: Column(children: [
 
                       Stack(
@@ -292,7 +292,7 @@ class FoodCategoryView extends StatelessWidget {
                             ),
                           ),
 
-                          (index == 9 && categoryController.categoryList!.length > 10) ? Positioned(
+                          (index == 7 && categoryController.categoryList!.length > 8) ? Positioned(
                             right: 0, left: 0, top: 0, bottom: 0,
                             child: Container(
                               decoration: BoxDecoration(
@@ -320,16 +320,37 @@ class FoodCategoryView extends StatelessWidget {
                       ),
                       const SizedBox(height: Dimensions.paddingSizeSmall),
 
-                      Expanded(child: Text(
-                        (index == 9 && categoryController.categoryList!.length > 10) ?  'see_all'.tr : categoryController.categoryList![index].name ?? '',
-                        style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall, color: (index == 9 && categoryController.categoryList!.length > 10) ? Theme.of(context).primaryColor : Theme.of(context).textTheme.bodyMedium!.color),
-                        maxLines: 2, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center,
-                      )),
+                      // Flexible(child: Text(
+                      //   (index == 7 && categoryController.categoryList!.length > 8) ?  'see_all'.tr : categoryController.categoryList![index].name ?? '',
+                      //   style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall, color: (index == 7 && categoryController.categoryList!.length > 8) ? Theme.of(context).primaryColor : Theme.of(context).textTheme.bodyMedium!.color),
+                      //   maxLines: 2, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center,
+                      // )),
+                      Flexible(
+                        child: Text(
+                          (index == 7 && categoryController.categoryList!.length > 8)
+                              ? 'see_all'.tr
+                              : categoryController.categoryList![index].name ?? '',
+                          style: robotoMedium.copyWith(
+                            fontSize: Dimensions.fontSizeSmall,
+                            color: (index == 7 && categoryController.categoryList!.length > 8)
+                                ? Theme.of(context).primaryColor
+                                : Theme.of(context).textTheme.bodyMedium!.color,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                        ),
+                      )
                     ]),
                   ),
                 ),
               );
-            },
+            }, gridDelegate:  const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2, // 🔥 2 rows
+            mainAxisSpacing: 6,
+            crossAxisSpacing: 6,
+            childAspectRatio: 0.8,
+          ),
           ) : FoodCategoryShimmer(categoryController: categoryController),
         ),
       ]),

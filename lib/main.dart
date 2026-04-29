@@ -56,10 +56,11 @@ Future<void> main() async {
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
     return true;
   };*/
-
+//apiKey: "AIzaSyC93dMdWaKfWqCLS6_Z-xrwT_eKqQVvDIY", old api key , coomented on 24-04-2026 by saiteja
+  //  name: 'anythingz customer', removed on 24-04-2026 by saiteja
   if(GetPlatform.isWeb){
     await Firebase.initializeApp(options: const FirebaseOptions(
-        apiKey: "AIzaSyC93dMdWaKfWqCLS6_Z-xrwT_eKqQVvDIY",
+        apiKey: "AIzaSyCwZYDuc3L9eTTsWdRxLno34nI205v7Eas",
         authDomain: "anythingz-96d30.firebaseapp.com",
         projectId: "anythingz-96d30",
         storageBucket: "anythingz-96d30.firebasestorage.app",
@@ -68,9 +69,8 @@ Future<void> main() async {
     ));
   } else if(GetPlatform.isAndroid) {
     await Firebase.initializeApp(
-      name: 'anythingz customer',
       options: const FirebaseOptions(
-        apiKey: "AIzaSyC93dMdWaKfWqCLS6_Z-xrwT_eKqQVvDIY",
+        apiKey: "AIzaSyCwZYDuc3L9eTTsWdRxLno34nI205v7Eas",
         appId: "1:639107211605:android:e504af4ea416e576e74fdc",
         messagingSenderId: "639107211605",
         projectId: "anythingz-96d30",

@@ -17,6 +17,8 @@ import 'package:anythingz/features/home/widgets/views/special_offer_view.dart';
 import 'package:anythingz/features/home/widgets/views/visit_again_view.dart';
 import 'package:anythingz/features/home/widgets/banner_view.dart';
 
+import '../../../profile/controllers/profile_controller.dart';
+
 class FoodHomeScreen extends StatelessWidget {
   const FoodHomeScreen({super.key});
 
@@ -57,12 +59,29 @@ class FoodHomeScreen extends StatelessWidget {
             ),
             child: const Column(
               children: [
-                BannerView(isFeatured: false),
+                BannerView(isFeatured: true),
                 SizedBox(height: 12),
               ],
             ),
           ),
+          GetBuilder<ProfileController>(
+            builder: (profileController) {
 
+              bool isLoggedIn = AuthHelper.isLoggedIn();
+
+              String name = isLoggedIn
+                  ? "${profileController.userInfoModel?.fName ?? ''}"
+                  : "Hey";
+
+              return Text(
+                "$name, what's on your mind?",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              );
+            },
+          ),
           const CategoryView(),
           if (isLoggedIn) const VisitAgainView(fromFood: true),
           const SpecialOfferView(isFood: true, isShop: false),

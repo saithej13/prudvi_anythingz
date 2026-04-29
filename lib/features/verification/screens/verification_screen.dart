@@ -63,7 +63,7 @@ class VerificationScreenState extends State<VerificationScreen> {
   }
 
   void _startTimer() {
-    _seconds = 60;
+    _seconds = 120;
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _seconds = _seconds - 1;
       if(_seconds == 0) {

@@ -1,7 +1,7 @@
 name: anythingz
 description: A Multi-vendor1 Food. Grocery, eCommerce, Pharmacy & Parcel service.
 publish_to: 'none' #
-version: 102.0.3+503
+version: 102.0.4+504
 
 environment:
   sdk: '>=3.2.0 <4.0.0'
