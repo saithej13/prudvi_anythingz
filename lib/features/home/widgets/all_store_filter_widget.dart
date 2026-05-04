@@ -9,113 +9,142 @@ import 'package:anythingz/util/dimensions.dart';
 import 'package:anythingz/util/styles.dart';
 
 class AllStoreFilterWidget extends StatelessWidget {
-  const AllStoreFilterWidget({super.key, });
+  const AllStoreFilterWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<StoreController>(
       builder: (storeController) {
+        final splash = Get.find<SplashController>();
+
         return Center(
           child: Container(
             width: Dimensions.webMaxWidth,
             transform: Matrix4.translationValues(0, -2, 0),
             color: Theme.of(context).colorScheme.surface,
-            padding: const EdgeInsets.only(left: Dimensions.paddingSizeDefault, top: Dimensions.paddingSizeSmall),
-            child: ResponsiveHelper.isDesktop(context) ? Row(children: [
-              Expanded(
-                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text(
-                    Get.find<SplashController>().configModel!.moduleConfig!.module!.showRestaurantText! ? 'restaurants'.tr : 'stores'.tr,
-                    style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge),
-                  ),
+            padding: const EdgeInsets.symmetric(
+              horizontal: Dimensions.paddingSizeDefault,
+              vertical: Dimensions.paddingSizeSmall,
+            ),
 
-                  Text(
-                    '${storeController.storeModel?.totalSize ?? 0} ${Get.find<SplashController>().configModel!.moduleConfig!.module!.showRestaurantText! ? 'restaurants_near_you'.tr : 'stores_near_you'.tr}',
-                    maxLines: 1, overflow: TextOverflow.ellipsis,
-                    style: robotoRegular.copyWith(color: Theme.of(context).disabledColor, fontSize: Dimensions.fontSizeSmall),
-                  ),
-
-                ]),
-              ),
-
-              const SizedBox(width: Dimensions.paddingSizeSmall),
-
-              filter(context, storeController),
-            ]) : Column(children: [
-
-              Padding(
-                padding: const EdgeInsets.only(right: Dimensions.paddingSizeSmall),
-                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                  Text(
-                  Get.find<SplashController>().configModel!.moduleConfig!.module!.showRestaurantText! ? 'restaurants'.tr : 'stores'.tr,
-                    style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge),
-                  ),
-                  Flexible(
-                    child: Text(
-                      '${storeController.storeModel?.totalSize ?? 0} ${Get.find<SplashController>().configModel!.moduleConfig!.module!.showRestaurantText! ? 'restaurants_near_you'.tr : 'stores_near_you'.tr}',
-                      maxLines: 1, overflow: TextOverflow.ellipsis,
-                      style: robotoRegular.copyWith(color: Theme.of(context).disabledColor, fontSize: Dimensions.fontSizeSmall),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                /// ================= HEADER =================
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      splash.configModel!.moduleConfig!.module!.showRestaurantText!
+                          ? 'restaurants'.tr
+                          : 'stores'.tr,
+                      style: robotoBold.copyWith(
+                        fontSize: Dimensions.fontSizeLarge,
+                      ),
                     ),
-                  ),
-                ]),
-              ),
-              const SizedBox(height: Dimensions.paddingSizeSmall),
 
-              filter(context, storeController),
-            ]),
+                    Text(
+                      '${storeController.storeModel?.totalSize ?? 0} '
+                          '${splash.configModel!.moduleConfig!.module!.showRestaurantText! ? 'restaurants_near_you'.tr : 'stores_near_you'.tr}',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: robotoRegular.copyWith(
+                        color: Theme.of(context).disabledColor,
+                        fontSize: Dimensions.fontSizeSmall,
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 8),
+
+                /// ================= FILTER BAR =================
+                SizedBox(
+                  height: 40,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    physics: const BouncingScrollPhysics(),
+                    cacheExtent: 1000, // ⚡ improves scroll smoothness
+                    padding: EdgeInsets.zero,
+
+                    children: [
+                      /// OPTIONAL FILTER VIEW (desktop/mobile safe)
+                      if (!ResponsiveHelper.isDesktop(context)) ...[
+                        RepaintBoundary(
+                          child: FilterView(storeController: storeController),
+                        ),
+                        const SizedBox(width: Dimensions.paddingSizeSmall),
+                      ],
+
+                      /// ALL
+                      _buildFilterButton(
+                        context,
+                        storeController,
+                        title: 'all'.tr,
+                        value: 'all',
+                      ),
+
+                      const SizedBox(width: Dimensions.paddingSizeSmall),
+
+                      /// NEWLY JOINED
+                      _buildFilterButton(
+                        context,
+                        storeController,
+                        title: 'newly_joined'.tr,
+                        value: 'newly_joined',
+                      ),
+
+                      const SizedBox(width: Dimensions.paddingSizeSmall),
+
+                      /// POPULAR
+                      _buildFilterButton(
+                        context,
+                        storeController,
+                        title: 'popular'.tr,
+                        value: 'popular',
+                      ),
+
+                      const SizedBox(width: Dimensions.paddingSizeSmall),
+
+                      /// TOP RATED
+                      _buildFilterButton(
+                        context,
+                        storeController,
+                        title: 'top_rated'.tr,
+                        value: 'top_rated',
+                      ),
+
+                      const SizedBox(width: Dimensions.paddingSizeSmall),
+
+                      /// Desktop extra filter
+                      if (ResponsiveHelper.isDesktop(context)) ...[
+                        RepaintBoundary(
+                          child: FilterView(storeController: storeController),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         );
-      }
+      },
     );
   }
 
-  Widget filter(BuildContext context, StoreController storeController) {
-    return SizedBox(
-      height: ResponsiveHelper.isDesktop(context) ? 40 : 30,
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: ListView(
-          scrollDirection: Axis.horizontal,
-          shrinkWrap: true,
-          padding: EdgeInsets.zero,
-
-          children: [
-            ResponsiveHelper.isDesktop(context) ? const SizedBox() : FilterView(storeController: storeController),
-            const SizedBox(width: Dimensions.paddingSizeSmall),
-
-            StoreFilterButtonWidget(
-              buttonText: 'all'.tr,
-              onTap: () => storeController.setStoreType('all'),
-              isSelected: storeController.storeType == 'all',
-            ),
-            const SizedBox(width: Dimensions.paddingSizeSmall),
-
-            StoreFilterButtonWidget(
-              buttonText: 'newly_joined'.tr,
-              onTap: () => storeController.setStoreType('newly_joined'),
-              isSelected: storeController.storeType == 'newly_joined',
-            ),
-            const SizedBox(width: Dimensions.paddingSizeSmall),
-
-            StoreFilterButtonWidget(
-              buttonText: 'popular'.tr,
-              onTap: () => storeController.setStoreType('popular'),
-              isSelected: storeController.storeType == 'popular',
-            ),
-            const SizedBox(width: Dimensions.paddingSizeSmall),
-
-            StoreFilterButtonWidget(
-              buttonText: 'top_rated'.tr,
-              onTap: () => storeController.setStoreType('top_rated'),
-              isSelected: storeController.storeType == 'top_rated',
-            ),
-            const SizedBox(width: Dimensions.paddingSizeSmall),
-
-
-            ResponsiveHelper.isDesktop(context) ? FilterView(storeController: storeController) : const SizedBox(),
-
-          ],
-        ),
+  /// ================= FILTER BUTTON =================
+  Widget _buildFilterButton(
+      BuildContext context,
+      StoreController controller, {
+        required String title,
+        required String value,
+      }) {
+    return RepaintBoundary(
+      child: StoreFilterButtonWidget(
+        buttonText: title,
+        isSelected: controller.storeType == value,
+        onTap: () => controller.setStoreType(value),
       ),
     );
   }

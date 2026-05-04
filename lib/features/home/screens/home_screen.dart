@@ -123,6 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final ScrollController _scrollController = ScrollController();
   bool searchBgShow = false;
   final GlobalKey _headerKey = GlobalKey();
+  final StoreController storeController = Get.find<StoreController>();
 
   @override
   void initState() {
@@ -197,6 +198,21 @@ class _HomeScreenState extends State<HomeScreen> {
       await Get.find<TaxiCartController>().getCarCartList();
     }
   }
+
+  bool isPaginating = false;
+
+  Future<void> triggerPagination() async {
+    if (isPaginating) return;
+
+    isPaginating = true;
+
+    final nextOffset = (storeController.storeModel?.offset ?? 0) + 1;
+
+    await storeController.getStoreList(nextOffset, false);
+
+    isPaginating = false;
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -454,40 +470,77 @@ class _HomeScreenState extends State<HomeScreen> {
                       ]),
                     )),
                   ),
-
-                  !showMobileModule && !isTaxi ? SliverPersistentHeader(
-                    key: _headerKey,
-                    pinned: true,
-                    delegate: SliverDelegate(
-                      height: 85,
-                      callback: (val) {
-                        searchBgShow = val;
-                      },
-                      child: const AllStoreFilterWidget(),
-                    ),
-                  ) : const SliverToBoxAdapter(),
-
-                  SliverToBoxAdapter(child: !showMobileModule && !isTaxi ? Center(child: GetBuilder<StoreController>(builder: (storeController) {
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: ResponsiveHelper.isDesktop(context) ? 0 : 100),
-                      child: PaginatedListView(
-                        scrollController: _scrollController,
-                        totalSize: storeController.storeModel?.totalSize,
-                        offset: storeController.storeModel?.offset,
-                        onPaginate: (int? offset) async => await storeController.getStoreList(offset!, false),
-                        itemView: ItemsView(
-                          isStore: true,
-                          items: null,
-                          isFoodOrGrocery: (isFood || isGrocery),
-                          stores: storeController.storeModel?.stores,
-                          padding: EdgeInsets.symmetric(
-                            horizontal: ResponsiveHelper.isDesktop(context) ? Dimensions.paddingSizeExtraSmall : Dimensions.paddingSizeSmall,
-                            vertical: ResponsiveHelper.isDesktop(context) ? Dimensions.paddingSizeExtraSmall : Dimensions.paddingSizeDefault,
-                          ),
-                        ),
-                      ),
-                    );
-                  }),) : const SizedBox()),
+//Commented by saiteja on 30 April 2026 (AllStoreFilterWidget
+//                   !showMobileModule && !isTaxi
+//                       ? SliverPersistentHeader(
+//                     key: _headerKey,
+//                     pinned: true,
+//                     delegate: SliverDelegate(
+//                       height: 95,
+//                       callback: (val) => searchBgShow = val,
+//                       child: const AllStoreFilterWidget(),
+//                     ),
+//                   )
+//                       : const SliverToBoxAdapter(),
+//
+//                   /// ================= STORE LIST =================
+//                   SliverPadding(
+//                     padding: EdgeInsets.only(
+//                       bottom: ResponsiveHelper.isDesktop(context) ? 0 : 120,
+//                     ),
+//
+//                     sliver: AnimatedBuilder(
+//                       animation: storeController, // 👈 lightweight reactive update
+//                       builder: (context, _) {
+//
+//                         final stores = storeController.storeModel?.stores ?? [];
+//
+//                         if (storeController.isLoading && stores.isEmpty) {
+//                           return const SliverToBoxAdapter(
+//                             child: Center(child: CircularProgressIndicator()),
+//                           );
+//                         }
+//
+//                         return SliverList(
+//                           delegate: SliverChildBuilderDelegate(
+//                                 (context, index) {
+//
+//                               /// ================= LOAD MORE =================
+//                               if (index == stores.length) {
+//                                 storeController.triggerPagination(); // safe call
+//
+//                                 return const Padding(
+//                                   padding: EdgeInsets.all(16),
+//                                   child: Center(child: CircularProgressIndicator()),
+//                                 );
+//                               }
+//
+//                               final store = stores[index];
+//
+//                               return RepaintBoundary(
+//                                 child: ItemsView(
+//                                   isStore: true,
+//                                   items: null,
+//                                   isFoodOrGrocery: (isFood || isGrocery),
+//                                   stores: [store],
+//                                   padding: EdgeInsets.symmetric(
+//                                     horizontal: ResponsiveHelper.isDesktop(context)
+//                                         ? Dimensions.paddingSizeExtraSmall
+//                                         : Dimensions.paddingSizeSmall,
+//                                     vertical: ResponsiveHelper.isDesktop(context)
+//                                         ? Dimensions.paddingSizeExtraSmall
+//                                         : Dimensions.paddingSizeDefault,
+//                                   ),
+//                                 ),
+//                               );
+//                             },
+//
+//                             childCount: stores.length + 1,
+//                           ),
+//                         );
+//                       },
+//                     ),
+//                   ),
 
 
                 ],

@@ -18,17 +18,30 @@ import 'package:anythingz/features/home/widgets/views/visit_again_view.dart';
 import 'package:anythingz/features/home/widgets/banner_view.dart';
 
 import '../../../profile/controllers/profile_controller.dart';
+import '../../../storesilverlist/StoreSliverListWidget.dart';
 
-class FoodHomeScreen extends StatelessWidget {
+class FoodHomeScreen extends StatefulWidget {
   const FoodHomeScreen({super.key});
 
   @override
+  State<FoodHomeScreen> createState() => _FoodHomeScreenState();
+}
 
+class _FoodHomeScreenState extends State<FoodHomeScreen> {
+  final ScrollController _scrollController = ScrollController();
 
+  @override
+  void dispose() {
+    _scrollController.dispose(); // ✅ important
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     bool isLoggedIn = AuthHelper.isLoggedIn();
 
     return SingleChildScrollView(
+      controller: _scrollController,
       physics: const BouncingScrollPhysics(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,6 +72,13 @@ class FoodHomeScreen extends StatelessWidget {
             ),
             child: const Column(
               children: [
+                Text(
+              "BannerView",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
                 BannerView(isFeatured: true),
                 SizedBox(height: 12),
               ],
@@ -83,22 +103,32 @@ class FoodHomeScreen extends StatelessWidget {
             },
           ),
           const CategoryView(),
-          if (isLoggedIn) const VisitAgainView(fromFood: true),
-          const SpecialOfferView(isFood: true, isShop: false),
-          const HighlightWidget(),
+          // if (isLoggedIn) const VisitAgainView(fromFood: true),
+          // const SpecialOfferView(isFood: true, isShop: false),
+          // const HighlightWidget(),
           const TopOffersNearMe(),
-          const BestReviewItemView(),
+          // const BestReviewItemView(),
           const BestStoreNearbyView(),
-          const ItemThatYouLoveView(forShop: false),
+          // const ItemThatYouLoveView(forShop: false),
           const MostPopularItemView(isFood: true, isShop: false),
-          const JustForYouView(),
+          // const JustForYouView(),
           const NewOnMartView(
             isNewStore: true,
             isPharmacy: false,
             isShop: false,
           ),
 
-          const SizedBox(height: 120), // bottom nav space
+          const SizedBox(height: 20),
+
+          StoreSliverListWidget(
+            scrollController: _scrollController,
+            isFood: true,
+            isGrocery: false,
+          ),
+
+          /// bottom spacing (optional safe area)
+          const SizedBox(height: 100),
+          // bottom nav space
         ],
       ),
     );

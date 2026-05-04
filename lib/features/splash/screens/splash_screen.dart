@@ -185,6 +185,7 @@ class SplashScreenState extends State<SplashScreen> {
 
     return Scaffold(
       key: _globalKey,
+      backgroundColor: Colors.yellow,
       body: GetBuilder<SplashController>(builder: (splashController) {
         return Center(
           child: splashController.hasConnection ? Column(
