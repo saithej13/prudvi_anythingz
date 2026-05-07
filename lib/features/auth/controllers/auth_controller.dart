@@ -15,6 +15,9 @@ import 'package:anythingz/features/auth/domain/services/auth_service_interface.d
 import 'package:anythingz/features/verification/screens/verification_screen.dart';
 import 'package:anythingz/helper/responsive_helper.dart';
 import 'package:anythingz/helper/route_helper.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:firebase_auth_platform_interface/firebase_auth_platform_interface.dart';
+
 
 class AuthController extends GetxController implements GetxService {
   final AuthServiceInterface authServiceInterface;
@@ -268,6 +271,54 @@ class AuthController extends GetxController implements GetxService {
     _isLoading = true;
     update();
 
+    if (kIsWeb) {
+      try {
+        final confirmation =
+        await FirebaseAuth.instance.signInWithPhoneNumber(
+          phoneNumber,
+            RecaptchaVerifier(
+              auth: FirebaseAuthPlatform.instance,
+              container: 'recaptcha-container',
+              size: RecaptchaVerifierSize.compact,
+              theme: RecaptchaVerifierTheme.light,
+            )
+        );
+        _isLoading = false;
+        update();
+        final vId = confirmation.verificationId;
+        if (updateUserModel != null) {
+          updateUserModel.sessionInfo = vId;
+        }
+        if (canRoute) {
+          _routeToVerificationScreen(
+            phoneNumber: phoneNumber,
+            token: token,
+            fromSignUp: fromSignUp,
+            loginType: loginType,
+            vId: vId,
+            updateUserModel: updateUserModel,
+          );
+        }
+      } on FirebaseAuthException catch (e) {
+        _isLoading = false;
+        update();
+        if (e.code == 'invalid-phone-number') {
+          showCustomSnackBar(
+            'please_submit_a_valid_phone_number'.tr,
+          );
+        } else {
+          showCustomSnackBar(
+            e.message?.replaceAll('_', ' '),
+          );
+        }
+      } catch (e) {
+        _isLoading = false;
+        update();
+        showCustomSnackBar(e.toString());
+      }
+      return;
+    }
+
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: phoneNumber,
       verificationCompleted: (PhoneAuthCredential credential) {},
@@ -275,7 +326,7 @@ class AuthController extends GetxController implements GetxService {
         _isLoading = false;
         update();
 
-        if(Get.isDialogOpen!) {
+        if (Get.isDialogOpen ?? false) {
           Get.back();
         }
 
@@ -288,7 +339,7 @@ class AuthController extends GetxController implements GetxService {
       },
       codeSent: (String vId, int? resendToken) {
 
-        if(Get.isDialogOpen!) {
+        if (Get.isDialogOpen ?? false) {
           Get.back();
         }
 
@@ -299,29 +350,85 @@ class AuthController extends GetxController implements GetxService {
         }
 
         if(canRoute) {
-          if(ResponsiveHelper.isDesktop(Get.context)) {
-
-            Get.back();
-            Get.dialog(VerificationScreen(
-              number: phoneNumber, email: null, token: token, fromSignUp: fromSignUp, fromForgetPassword: !fromSignUp,
-              loginType: loginType, password: '', firebaseSession: vId, userModel: updateUserModel,
-            ));
-          } else {
-            Get.toNamed(RouteHelper.getVerificationRoute(
-              phoneNumber, '', token, fromSignUp ? RouteHelper.signUp : RouteHelper.forgotPassword, '', loginType,
-              session: vId, updateUserModel: updateUserModel,
-            ));
-          }
+            _routeToVerificationScreen(
+              phoneNumber: phoneNumber,
+              token: token,
+              fromSignUp: fromSignUp,
+              loginType: loginType,
+              vId: vId,
+              updateUserModel: updateUserModel,
+            );
+          // if(ResponsiveHelper.isDesktop(Get.context)) {
+          //
+          //   Get.back();
+          //   Get.dialog(VerificationScreen(
+          //     number: phoneNumber, email: null, token: token, fromSignUp: fromSignUp, fromForgetPassword: !fromSignUp,
+          //     loginType: loginType, password: '', firebaseSession: vId, userModel: updateUserModel,
+          //   ));
+          // } else {
+          //   Get.toNamed(RouteHelper.getVerificationRoute(
+          //     phoneNumber, '', token, fromSignUp ? RouteHelper.signUp : RouteHelper.forgotPassword, '', loginType,
+          //     session: vId, updateUserModel: updateUserModel,
+          //   ));
+          // }
         }
       },
       codeAutoRetrievalTimeout: (String verificationId) {
-        if(Get.isDialogOpen!) {
+        if (Get.isDialogOpen ?? false){
           Get.back();
         }
         showCustomSnackBar('timed_out_please_try_again_after_few_minutes'.tr);
       },
     );
 
+  }
+
+
+  void _routeToVerificationScreen({
+    required String phoneNumber,
+    required String? token,
+    required bool fromSignUp,
+    required String loginType,
+    required String vId,
+    UpdateUserModel? updateUserModel,
+  }) {
+
+    if(ResponsiveHelper.isDesktop(Get.context)) {
+
+      Get.back();
+
+      Get.dialog(
+        VerificationScreen(
+          number: phoneNumber,
+          email: null,
+          token: token,
+          fromSignUp: fromSignUp,
+          fromForgetPassword: !fromSignUp,
+          loginType: loginType,
+          password: '',
+          firebaseSession: vId,
+          userModel: updateUserModel,
+        ),
+      );
+
+    } else {
+
+      Get.toNamed(
+        RouteHelper.getVerificationRoute(
+          phoneNumber,
+          '',
+          token,
+          fromSignUp
+              ? RouteHelper.signUp
+              : RouteHelper.forgotPassword,
+          '',
+          loginType,
+          session: vId,
+          updateUserModel: updateUserModel,
+        ),
+      );
+
+    }
   }
 
 }

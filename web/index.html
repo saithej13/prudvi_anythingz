@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <base href="/">
+  <base href="/app/">
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
@@ -21,7 +21,7 @@
 
   <script type="text/javascript" src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"></script>
 
-  <title>6amMart</title>
+  <title>Anythingz</title>
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" type="text/css" href="style.css">
   <script type="application/javascript" src="/assets/packages/flutter_inappwebview_web/assets/web/web_support.js" defer></script>
@@ -35,7 +35,9 @@
   <script src="flutter.js?version=3.0.0" defer></script>
 </head>
 
+
 <body>
+<div id="recaptcha-container" style="display:none;"></div>
   <!-- This script installs service_worker.js to provide PWA functionality to
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
@@ -44,6 +46,7 @@
 <!--  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>-->
 
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js"></script>
 
 <!--  <div class="center">-->
@@ -174,28 +177,28 @@
     }
   </script>
 
-  <script>
-    // Import the functions you need from the SDKs you need
-    import { initializeApp } from "firebase/app";
-    import { getAnalytics } from "firebase/analytics";
-    // TODO: Add SDKs for Firebase products that you want to use
-    // https://firebase.google.com/docs/web/setup#available-libraries
-    // Your web app's Firebase configuration
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-    const firebaseConfig = {
-      apiKey: "AIzaSyDFN-73p8zKVZbA0i5DtO215XzAb-xuGSE",
-      authDomain: "ammart-8885e.firebaseapp.com",
-      databaseURL: "https://ammart-8885e-default-rtdb.firebaseio.com",
-      projectId: "ammart-8885e",
-      storageBucket: "ammart-8885e.appspot.com",
-      messagingSenderId: "1000163153346",
-      appId: "1:1000163153346:web:4f702a4b5adbd5c906b25b",
-      measurementId: "G-L1GNL2YV61"
-    };
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
-  </script>
+<!--  <script>-->
+<!--    // Import the functions you need from the SDKs you need-->
+<!--    import { initializeApp } from "firebase/app";-->
+<!--    import { getAnalytics } from "firebase/analytics";-->
+<!--    // TODO: Add SDKs for Firebase products that you want to use-->
+<!--    // https://firebase.google.com/docs/web/setup#available-libraries-->
+<!--    // Your web app's Firebase configuration-->
+<!--    // For Firebase JS SDK v7.20.0 and later, measurementId is optional-->
+<!--   const firebaseConfig = {-->
+<!--      apiKey: "AIzaSyC93dMdWaKfWqCLS6_Z-xrwT_eKqQVvDIY",-->
+<!--      authDomain: "anythingz-96d30.firebaseapp.com",-->
+<!--      projectId: "anythingz-96d30",-->
+<!--      storageBucket: "anythingz-96d30.firebasestorage.app",-->
+<!--      messagingSenderId: "639107211605",-->
+<!--      appId: "1:639107211605:web:926dac89ef9790ede74fdc",-->
+<!--      measurementId: "G-XYK8MCZMD1"-->
+<!--    };-->
+<!--    // Initialize Firebase-->
+<!--    //databaseURL: "https://ammart-8885e-default-rtdb.firebaseio.com",-->
+<!--    const app = initializeApp(firebaseConfig);-->
+<!--    const analytics = getAnalytics(app);-->
+<!--  </script>-->
 
 </body>
 </html>

@@ -2,15 +2,15 @@ importScripts("https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js");
 importScripts("https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js");
 
 firebase.initializeApp({
-  apiKey: "AIzaSyDFN-73p8zKVZbA0i5DtO215XzAb-xuGSE",
-  authDomain: "ammart-8885e.firebaseapp.com",
-  databaseURL: "https://ammart-8885e-default-rtdb.firebaseio.com",
-  projectId: "ammart-8885e",
-  storageBucket: "ammart-8885e.appspot.com",
-  messagingSenderId: "1000163153346",
-  appId: "1:1000163153346:web:4f702a4b5adbd5c906b25b",
-  measurementId: "G-L1GNL2YV61"
+  apiKey: "AIzaSyC93dMdWaKfWqCLS6_Z-xrwT_eKqQVvDIY",
+  authDomain: "anythingz-96d30.firebaseapp.com",
+  projectId: "anythingz-96d30",
+  storageBucket: "anythingz-96d30.firebasestorage.app",
+  messagingSenderId: "639107211605",
+  appId: "1:639107211605:web:926dac89ef9790ede74fdc",
+  measurementId: "G-XYK8MCZMD1"
 });
+// databaseURL: "https://ammart-8885e-default-rtdb.firebaseio.com",
 
 const messaging = firebase.messaging();
 
