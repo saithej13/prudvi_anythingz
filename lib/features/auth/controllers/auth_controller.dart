@@ -279,7 +279,7 @@ class AuthController extends GetxController implements GetxService {
             RecaptchaVerifier(
               auth: FirebaseAuthPlatform.instance,
               container: 'recaptcha-container',
-              size: RecaptchaVerifierSize.compact,
+              size: RecaptchaVerifierSize.normal,
               theme: RecaptchaVerifierTheme.light,
             )
         );

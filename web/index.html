@@ -8,6 +8,15 @@
   <meta name="description" content="A Multi-vendor Food. Grocery, eCommerce, Pharmacy & Parcel service.">
   <!--<meta name="robots" content="nofollow, noindex, max-snippet:1, max-video-preview:1, max-image-preview:standard">-->
 
+  <style>
+    #recaptcha-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 9999;
+    }
+  </style>
+
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -37,7 +46,7 @@
 
 
 <body>
-<div id="recaptcha-container" style="display:none;"></div>
+<div id="recaptcha-container"></div>
   <!-- This script installs service_worker.js to provide PWA functionality to
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
@@ -45,9 +54,25 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBmRTC_4asiyj1HnYz9YCXI7Jw2EBmiI5Q"></script>
 <!--  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>-->
 
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCwZYDuc3L9eTTsWdRxLno34nI205v7Eas",
+      authDomain: "anythingz-96d30.firebaseapp.com",
+      projectId: "anythingz-96d30",
+      storageBucket: "anythingz-96d30.firebasestorage.app",
+      messagingSenderId: "639107211605",
+      appId: "1:639107211605:web:926dac89ef9790ede74fdc",
+      measurementId: "G-XYK8MCZMD1"
+    };
+    // Initialize Firebase
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+  </script>
 
 <!--  <div class="center">-->
 <!--    <img src="logo.png" alt = "logo" width="300px" />-->
