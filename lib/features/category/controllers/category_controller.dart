@@ -65,6 +65,8 @@ class CategoryController extends GetxController implements GetxService {
     if(_categoryList == null || reload || fromRecall) {
       if(reload) {
         _categoryList = null;
+        _isLoading = true;
+        update();
       }
       List<CategoryModel>? categoryList;
       if(dataSource == DataSourceEnum.local) {
@@ -74,6 +76,8 @@ class CategoryController extends GetxController implements GetxService {
       } else {
         categoryList = await categoryServiceInterface.getCategoryList(allCategory, source: DataSourceEnum.client);
         _prepareCategoryList(categoryList);
+        _isLoading = false;
+        update();
       }
 
     }

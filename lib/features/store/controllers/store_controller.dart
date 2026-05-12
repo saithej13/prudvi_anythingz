@@ -186,6 +186,7 @@ class StoreController extends GetxController implements GetxService {
   Future<void> getStoreList(int offset, bool reload, {DataSourceEnum source = DataSourceEnum.local}) async {
     if(reload) {
       _storeModel = null;
+      _isLoading = true;
       update();
     }
     StoreModel? storeModel;
@@ -196,6 +197,8 @@ class StoreController extends GetxController implements GetxService {
     } else {
       storeModel = await storeServiceInterface.getStoreList(offset, _filterType, _storeType, source: DataSourceEnum.client);
       _prepareStoreModel(storeModel, offset);
+      _isLoading = false;
+      update();
     }
   }
 
@@ -225,6 +228,22 @@ class StoreController extends GetxController implements GetxService {
   void resetStoreData() {
     _filterType = 'all';
     _storeType = 'all';
+  }
+
+  void clearStoreData() {
+    _storeModel = null;
+    _popularStoreList = null;
+    _latestStoreList = null;
+    _topOfferStoreList = null;
+    _featuredStoreList = null;
+    _visitAgainStoreList = null;
+    _store = null;
+    _storeItemModel = null;
+    _storeSearchItemModel = null;
+    _recommendedItemModel = null;
+    _cartSuggestItemModel = null;
+    _recommendedStoreList = null;
+    _storeBanners = null;
   }
 
   Future<void> getPopularStoreList(bool reload, String type, bool notify, {DataSourceEnum dataSource = DataSourceEnum.local, bool fromRecall = false}) async {

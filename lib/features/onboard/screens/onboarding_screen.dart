@@ -139,13 +139,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
   void _configureToRouteInitialPage() async {
     Get.find<SplashController>().disableIntro();
-    await Get.find<AuthController>().guestLogin();
-    if (AddressHelper.getUserAddressFromSharedPref() != null) {
-      Get.offNamed(RouteHelper.getInitialRoute(fromSplash: true));
-    } else {
-      Get.find<LocationController>().navigateToLocationScreen(RouteHelper.onBoarding, offNamed: true).then((v) {
-        _pageController.jumpToPage(Get.find<OnBoardingController>().onBoardingList.length-2);
-      });
-    }
+    // await Get.find<AuthController>().guestLogin();
+    Get.offNamed(RouteHelper.getSignInRoute(RouteHelper.onBoarding));
   }
 }

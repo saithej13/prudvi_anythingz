@@ -1258,40 +1258,42 @@ class _StoreScreenState extends State<StoreScreen> {
                                               physics:
                                                   const BouncingScrollPhysics(),
                                               itemBuilder: (context, index) {
-                                                return Padding(
-                                                  padding: ResponsiveHelper
-                                                          .isDesktop(context)
-                                                      ? const EdgeInsets
-                                                          .symmetric(
-                                                          vertical: 20)
-                                                      : const EdgeInsets
-                                                          .symmetric(
-                                                          vertical: 10),
-                                                  child: Container(
-                                                    width: ResponsiveHelper
+                                                return RepaintBoundary(
+                                                  child: Padding(
+                                                    padding: ResponsiveHelper
                                                             .isDesktop(context)
-                                                        ? 500
-                                                        : 300,
-                                                    padding: const EdgeInsets
-                                                        .only(
-                                                        right: Dimensions
-                                                            .paddingSizeSmall,
-                                                        left: Dimensions
-                                                            .paddingSizeExtraSmall),
-                                                    margin: const EdgeInsets
-                                                        .only(
-                                                        right: Dimensions
-                                                            .paddingSizeSmall),
-                                                    child: ItemWidget(
-                                                      isStore: false,
-                                                      item: storeController
-                                                          .recommendedItemModel!
-                                                          .items![index],
-                                                      store: null,
-                                                      index: index,
-                                                      length: null,
-                                                      isCampaign: false,
-                                                      inStore: true,
+                                                        ? const EdgeInsets
+                                                            .symmetric(
+                                                            vertical: 20)
+                                                        : const EdgeInsets
+                                                            .symmetric(
+                                                            vertical: 10),
+                                                    child: Container(
+                                                      width: ResponsiveHelper
+                                                              .isDesktop(context)
+                                                          ? 500
+                                                          : 300,
+                                                      padding: const EdgeInsets
+                                                          .only(
+                                                          right: Dimensions
+                                                              .paddingSizeSmall,
+                                                          left: Dimensions
+                                                              .paddingSizeExtraSmall),
+                                                      margin: const EdgeInsets
+                                                          .only(
+                                                          right: Dimensions
+                                                              .paddingSizeSmall),
+                                                      child: ItemWidget(
+                                                        isStore: false,
+                                                        item: storeController
+                                                            .recommendedItemModel!
+                                                            .items![index],
+                                                        store: null,
+                                                        index: index,
+                                                        length: null,
+                                                        isCampaign: false,
+                                                        inStore: true,
+                                                      ),
                                                     ),
                                                   ),
                                                 );
@@ -1431,41 +1433,70 @@ class _StoreScreenState extends State<StoreScreen> {
 
                       ResponsiveHelper.isDesktop(context)
                           ? const SliverToBoxAdapter(child: SizedBox())
-                          : SliverToBoxAdapter(
-                              child: Container(
-                              width: Dimensions.webMaxWidth,
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.surface,
+                          : SliverPadding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: Dimensions.paddingSizeSmall,
+                                vertical: Dimensions.paddingSizeSmall,
                               ),
-                              child: PaginatedListView(
-                                scrollController: scrollController,
-                                onPaginate: (int? offset) =>
-                                    storeController.getStoreItemList(
-                                        widget.store!.id ??
-                                            storeController.store!.id,
-                                        offset!,
-                                        storeController.type,
-                                        false),
-                                totalSize:
-                                    storeController.storeItemModel?.totalSize,
-                                offset: storeController.storeItemModel?.offset,
-                                itemView: ItemsView(
-                                  isStore: false,
-                                  stores: null,
-                                  items: (storeController
-                                              .categoryList!.isNotEmpty &&
-                                          storeController.storeItemModel !=
-                                              null)
+                              sliver: GetBuilder<StoreController>(
+                                builder: (storeController) {
+                                  final items = (storeController.categoryList!.isNotEmpty && storeController.storeItemModel != null)
                                       ? storeController.storeItemModel!.items
-                                      : null,
-                                  inStorePage: true,
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: Dimensions.paddingSizeSmall,
-                                    vertical: Dimensions.paddingSizeSmall,
-                                  ),
-                                ),
+                                      : null;
+
+                                  if (items == null) {
+                                    return const SliverToBoxAdapter(
+                                      child: Center(child: CircularProgressIndicator()),
+                                    );
+                                  }
+
+                                  if (items.isEmpty) {
+                                    return SliverToBoxAdapter(
+                                      child: Center(child: Text('no_item_available'.tr)),
+                                    );
+                                  }
+
+                                  return SliverList(
+                                    delegate: SliverChildBuilderDelegate(
+                                      (context, index) {
+                                        if (index == items.length) {
+                                          // Check if we need to load more
+                                          int totalSize = storeController.storeItemModel?.totalSize ?? 0;
+                                          int offset = storeController.storeItemModel?.offset ?? 1;
+                                          int pageSize = (totalSize / 10).ceil();
+
+                                          if (offset < pageSize) {
+                                            Future.microtask(() => storeController.getStoreItemList(
+                                              widget.store!.id ?? storeController.store!.id,
+                                              offset + 1,
+                                              storeController.type,
+                                              false,
+                                            ));
+                                            return const Padding(
+                                              padding: EdgeInsets.all(Dimensions.paddingSizeSmall),
+                                              child: Center(child: CircularProgressIndicator()),
+                                            );
+                                          }
+                                          return const SizedBox();
+                                        }
+
+                                        final item = items[index];
+                                        return ItemWidget(
+                                          isStore: false,
+                                          item: item,
+                                          store: null,
+                                          index: index,
+                                          length: items.length,
+                                          isCampaign: false,
+                                          inStore: true,
+                                        );
+                                      },
+                                      childCount: items.length + 1,
+                                    ),
+                                  );
+                                },
                               ),
-                            )),
+                            ),
                     ],
                   )
                 : const StoreDetailsScreenShimmerWidget();

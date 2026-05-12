@@ -25,6 +25,7 @@ import 'package:anythingz/features/home/screens/modules/food_home_screen.dart';
 import 'package:anythingz/features/home/screens/modules/grocery_home_screen.dart';
 import 'package:anythingz/features/home/screens/modules/pharmacy_home_screen.dart';
 import 'package:anythingz/features/home/screens/modules/shop_home_screen.dart';
+import 'package:anythingz/features/storesilverlist/StoreSliverListWidget.dart';
 import 'package:anythingz/features/parcel/controllers/parcel_controller.dart';
 import 'package:anythingz/features/rental_module/home/controllers/taxi_home_controller.dart';
 import 'package:anythingz/features/rental_module/home/screens/taxi_home_screen.dart';
@@ -470,78 +471,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       ]),
                     )),
                   ),
-//Commented by saiteja on 30 April 2026 (AllStoreFilterWidget
-//                   !showMobileModule && !isTaxi
-//                       ? SliverPersistentHeader(
-//                     key: _headerKey,
-//                     pinned: true,
-//                     delegate: SliverDelegate(
-//                       height: 95,
-//                       callback: (val) => searchBgShow = val,
-//                       child: const AllStoreFilterWidget(),
-//                     ),
-//                   )
-//                       : const SliverToBoxAdapter(),
-//
-//                   /// ================= STORE LIST =================
-//                   SliverPadding(
-//                     padding: EdgeInsets.only(
-//                       bottom: ResponsiveHelper.isDesktop(context) ? 0 : 120,
-//                     ),
-//
-//                     sliver: AnimatedBuilder(
-//                       animation: storeController, // 👈 lightweight reactive update
-//                       builder: (context, _) {
-//
-//                         final stores = storeController.storeModel?.stores ?? [];
-//
-//                         if (storeController.isLoading && stores.isEmpty) {
-//                           return const SliverToBoxAdapter(
-//                             child: Center(child: CircularProgressIndicator()),
-//                           );
-//                         }
-//
-//                         return SliverList(
-//                           delegate: SliverChildBuilderDelegate(
-//                                 (context, index) {
-//
-//                               /// ================= LOAD MORE =================
-//                               if (index == stores.length) {
-//                                 storeController.triggerPagination(); // safe call
-//
-//                                 return const Padding(
-//                                   padding: EdgeInsets.all(16),
-//                                   child: Center(child: CircularProgressIndicator()),
-//                                 );
-//                               }
-//
-//                               final store = stores[index];
-//
-//                               return RepaintBoundary(
-//                                 child: ItemsView(
-//                                   isStore: true,
-//                                   items: null,
-//                                   isFoodOrGrocery: (isFood || isGrocery),
-//                                   stores: [store],
-//                                   padding: EdgeInsets.symmetric(
-//                                     horizontal: ResponsiveHelper.isDesktop(context)
-//                                         ? Dimensions.paddingSizeExtraSmall
-//                                         : Dimensions.paddingSizeSmall,
-//                                     vertical: ResponsiveHelper.isDesktop(context)
-//                                         ? Dimensions.paddingSizeExtraSmall
-//                                         : Dimensions.paddingSizeDefault,
-//                                   ),
-//                                 ),
-//                               );
-//                             },
-//
-//                             childCount: stores.length + 1,
-//                           ),
-//                         );
-//                       },
-//                     ),
-//                   ),
 
+                  !showMobileModule && !isTaxi && !isParcel ? StoreSliverListWidget(
+                    isFood: isFood,
+                    isGrocery: isGrocery,
+                  ) : const SliverToBoxAdapter(),
 
                 ],
               ),

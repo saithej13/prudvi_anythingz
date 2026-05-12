@@ -148,9 +148,10 @@ class ItemController extends GetxController implements GetxService {
     _popularType = type;
     if(reload) {
       _popularItemList = null;
-    }
-    if(notify) {
-      update();
+      _isLoading = true;
+      if(notify) {
+        update();
+      }
     }
     if(_popularItemList == null || reload || fromRecall) {
       List<Item>? items;
@@ -161,6 +162,10 @@ class ItemController extends GetxController implements GetxService {
       } else {
         items = await itemServiceInterface.getPopularItemList(type, dataSource);
         _preparePopularItems(items);
+        _isLoading = false;
+        if(notify) {
+          update();
+        }
       }
 
     }
@@ -170,8 +175,8 @@ class ItemController extends GetxController implements GetxService {
     if (items != null) {
       _popularItemList = [];
       _popularItemList!.addAll(items);
-      _isLoading = false;
     }
+    _isLoading = false;
     update();
   }
 
@@ -179,9 +184,10 @@ class ItemController extends GetxController implements GetxService {
     _reviewedType = type;
     if(reload) {
       _reviewedItemList = null;
-    }
-    if(notify) {
-      update();
+      _isLoading = true;
+      if(notify) {
+        update();
+      }
     }
     if(_reviewedItemList == null || reload || fromRecall) {
       ItemModel? itemModel;
@@ -192,6 +198,10 @@ class ItemController extends GetxController implements GetxService {
       } else {
         itemModel = await itemServiceInterface.getReviewedItemList(type, dataSource);
         _preparedReviewedItems(itemModel);
+        _isLoading = false;
+        if(notify) {
+          update();
+        }
       }
 
     }
@@ -203,8 +213,8 @@ class ItemController extends GetxController implements GetxService {
       _reviewedCategoriesList = [];
       _reviewedItemList!.addAll(itemModel.items!);
       _reviewedCategoriesList!.addAll(itemModel.categories!);
-      _isLoading = false;
     }
+    _isLoading = false;
     update();
   }
 

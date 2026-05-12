@@ -88,11 +88,8 @@ import 'package:anythingz/util/app_constants.dart';
       _forLoggedInUserRouteProcess();
     } else if (Get.find<SplashController>().showIntro() == true) {
       _newlyRegisteredRouteProcess();
-    } else if (AuthHelper.isGuestLoggedIn()) {
-      _forGuestUserRouteProcess();
     } else {
-      await Get.find<AuthController>().guestLogin();
-      _forGuestUserRouteProcess();
+      Get.offNamed(RouteHelper.getSignInRoute(RouteHelper.splash));
     }
   }
 // }

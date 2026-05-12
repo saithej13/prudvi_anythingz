@@ -6,7 +6,7 @@ import 'package:anythingz/util/images.dart';
 class AppConstants {
   static const String appName = 'Anythingz';
   static const double appVersion = 3.0;
-  static const String releaseDate = '05 Feb 2026';
+  static const String releaseDate = '12 May 2026';
   static const String fontFamily = 'Roboto';
   static const bool payInWevView = false;
   static const int balanceInputLen = 10;

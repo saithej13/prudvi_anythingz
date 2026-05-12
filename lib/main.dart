@@ -131,9 +131,9 @@ class _MyAppState extends State<MyApp> {
         Get.find<AuthController>().clearSharedAddress();
       }
 
-      if(!AuthHelper.isLoggedIn() && !AuthHelper.isGuestLoggedIn() /*&& !ResponsiveHelper.isDesktop(Get.context!)*/) {
+      /*if(!AuthHelper.isLoggedIn() && !AuthHelper.isGuestLoggedIn() /*&& !ResponsiveHelper.isDesktop(Get.context!)*/) {
         await Get.find<AuthController>().guestLogin();
-      }
+      }*/
 
       if((AuthHelper.isLoggedIn() || AuthHelper.isGuestLoggedIn()) && Get.find<SplashController>().cacheModule != null) {
         Get.find<CartController>().getCartDataOnline();
