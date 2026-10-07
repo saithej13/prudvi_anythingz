@@ -78,8 +78,9 @@ class ModuleView extends StatelessWidget {
                         borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
                         child: CustomImage(
                           image: '${splashController.moduleList![index].iconFullUrl}',
-                          height: 80,
-                          width: 80,
+                          height: 300,
+                          width: 300,
+                         
                         ),
                       ),
                     )

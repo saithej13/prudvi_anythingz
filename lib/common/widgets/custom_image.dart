@@ -1,4 +1,3 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -29,10 +28,9 @@ class CustomImage extends StatelessWidget {
     final String fallback = placeholder.isNotEmpty
         ? placeholder
         : (isNotification
-        ? Images.notificationPlaceholder
-        : Images.placeholder);
+            ? Images.notificationPlaceholder
+            : Images.placeholder);
 
-    /// ⚡ FAST PATH: empty image
     if (image.isEmpty) {
       return _fallbackImage(fallback);
     }
@@ -45,8 +43,10 @@ class CustomImage extends StatelessWidget {
         height: height,
         width: width,
         fit: fit,
-        cacheWidth: 300, // ⚡ performance boost
-        filterQuality: FilterQuality.low,
+
+        // Keep original image resolution on Web
+        filterQuality: FilterQuality.high,
+
         errorBuilder: (_, __, ___) => _fallbackImage(fallback),
       );
     } else {
@@ -55,20 +55,21 @@ class CustomImage extends StatelessWidget {
         height: height,
         width: width,
         fit: fit,
-        memCacheWidth: 300, // ⚡ reduces memory usage
+
+        // Keep reasonable mobile memory usage
+        memCacheWidth: 300,
         memCacheHeight: 300,
+
         placeholder: (_, __) => _placeholderImage(fallback),
         errorWidget: (_, __, ___) => _fallbackImage(fallback),
       );
     }
 
-    /// ⚡ REMOVE AnimatedScale (it causes scroll jank)
     return RepaintBoundary(
       child: img,
     );
   }
 
-  /// ⚡ Lightweight placeholder (no rebuild cost)
   Widget _placeholderImage(String fallback) {
     return Image.asset(
       fallback,
